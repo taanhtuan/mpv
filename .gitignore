@@ -1,0 +1,13 @@
+# Files
+*.com
+*.dll
+*.exe
+updater.bat
+yt-dlp.conf
+
+# Directories
+doc
+installer
+mpv
+portable_config/cache
+portable_config/watch_later
