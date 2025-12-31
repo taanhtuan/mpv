@@ -16,8 +16,8 @@
 :: aac  (64kb/1ch): 2.0 128k,     5.1 384k,      7.1 512k-640k
 :: opus (48kb/1ch): 2.0 96k-128k, 5.1 256k-288k, 7.1 450k (https://wiki.xiph.org/Opus_Recommended_Settings)
 ::
-:: usage 1: extract 3rd audio stream input.mkv starting from 5.5 seconds to 1 minute 30 seconds, and reencode in AAC format at 192k bitrate, then export to file input.acc
-:: vea input.mkv aac 2 00:00:05.500 00:01:30 192
+:: usage 1: extract 3rd audio stream input.mkv starting from -0.5 seconds to 1 minute 30 seconds, and reencode in AAC format at 192k bitrate, then export to file input.acc
+:: vea input.mkv aac 2 500 00:01:30 192
 :: usage 2: simple export full first track to AAC at highest quality
 :: vea input.mkv
 @echo off
@@ -76,12 +76,12 @@ goto :eof
 :extract_audio
 echo Extracts audio stream %~2 from %INAME%, then uses [%LIB%] to convert to file %FNAME%%SUBFIX%.%~1
 if "%~4" == "" (
-  ffmpeg -i %INAME% -ss %~3 -map 0:a:%~2 -c:a %LIB% %FNAME%%SUBFIX%.%EXT%
+  ffmpeg -i %INAME% -af adelay=%~3:all=1 -map 0:a:%~2 -c:a %LIB% %FNAME%%SUBFIX%.%EXT%
 ) else (
   if "%~5" == "" (
-    ffmpeg -i %INAME% -ss %~3 -to %~4 -map 0:a:%~2 -c:a %LIB% %FNAME%%SUBFIX%.%EXT%
+    ffmpeg -i %INAME% -af adelay=%~3:all=1 -to %~4 -map 0:a:%~2 -c:a %LIB% %FNAME%%SUBFIX%.%EXT%
   ) else (
-    ffmpeg -i %INAME% -ss %~3 -to %~4 -map 0:a:%~2 -c:a %LIB% -b:a %~5k %FNAME%%SUBFIX%.%EXT%
+    ffmpeg -i %INAME% -af adelay=%~3:all=1 -to %~4 -map 0:a:%~2 -c:a %LIB% -b:a %~5k %FNAME%%SUBFIX%.%EXT%
   ) 
 )
 exit /b
