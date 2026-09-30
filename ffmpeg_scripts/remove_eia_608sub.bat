@@ -1,0 +1,1 @@
+ffmpeg -i a.mp4 -codec copy -bsf:v "filter_units=remove_types=6" a_output.mp4
